@@ -1,9 +1,9 @@
-# How-To: Set up AWS SSO on your Computer
+# How-To: Set up IAM Identity Center (AWS SSO) on your Computer
 
-The goal of this guide is to get you set up with using AWS SSO. This will allow you to use the AWS CLI and other tools that rely on AWS credentials.
+The goal of this guide is to get you set up to use IAM Identity Center (formerly AWS SSO). This will allow you to use the AWS CLI and other tools that rely on AWS credentials.
 We assume you've already installed the AWS CLI and have set up your AWS Identity Center user.
 
-## Configuring AWS CLI for SSO
+## Configuring AWS CLI for IAM Identity Center
 
 The following steps are based on using the `aws configure sso` command, which basically just sets up a profile in your AWS CLI configuration. You can also directly edit the `~/.aws/config` file.
 
@@ -23,7 +23,7 @@ The following steps are based on using the `aws configure sso` command, which ba
 This essentially just adds information to your `~/.aws/config` file.
 
 
-## Using AWS CLI with SSO
+## Using AWS CLI with IAM Identity Center
 
 To try logging in with your new SSO profile, run the following command:
 
@@ -31,9 +31,9 @@ To try logging in with your new SSO profile, run the following command:
 aws sso login --profile my-profile-name
 ```
 
-This should launch a browser.
-You'll need to fill in your username and password for your AWS Identity Center user, as well as the MFA code if you have MFA enabled (password managers and passkeys are great here).
-Once you've successfully logged in, you'll need to confirm an 8-letter code in the browser, which will then allow the AWS CLI to retrieve temporary credentials for your profile.
+The CLI should open a browser or prompt you to complete device authorization.
+You'll need to sign in as your AWS Identity Center user and complete MFA if it is enabled.
+Approve the sign-in flow if prompted, which will allow the AWS CLI to retrieve temporary credentials for your profile.
 Once you've done that, you can validate that you are logged in by running the following command:
 
 ```bash
@@ -53,4 +53,3 @@ export AWS_PROFILE=my-profile-name
 ```
 
 This way, I automatically set the `AWS_PROFILE` environment variable to the correct profile for the project in that directory.
-

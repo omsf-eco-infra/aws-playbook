@@ -1,6 +1,6 @@
 # Understanding: AWS SSO Profiles
 
-When you log in using IAM Identity Center users, we recommend using profiles on you local machine that help you manage your credentials and access to different AWS accounts and roles.
+When you log in using IAM Identity Center users, we recommend using profiles on your local machine to help you manage your credentials and access to different AWS accounts and roles.
 These profiles are stored in the `~/.aws/config` file and are used by the AWS CLI and other tools to authenticate your requests.
 
 Your `~/.aws/config` file will contain entries that look like this:
@@ -17,14 +17,14 @@ sso_region = us-east-2
 sso_registration_scopes = sso:account:access
 ```
 
-You'll usually have one `sso-session` entry per AWS organization (technically, per IAM Identity Center instance, but there's one of those per organization), and then multiple `profile` entries that reference that session for different accounts and roles.
+You'll usually have one `sso-session` entry per AWS organization (technically, per IAM Identity Center instance, and there is typically one of those per organization), and then multiple `profile` entries that reference that session for different accounts and roles.
 In my own setup, I have 3 `sso-session` entries: for my personal AWS organization, for the Eco-Infra AWS organization, and for the OMSF AWS organization.
 The `sso_start_url` is the URL of the IAM Identity Center user portal for that organization. The `sso_region` is the region where IAM Identity Center is deployed for that organization (not necessarily where you will deploy resources).
 For `sso_registration_scopes`, you'll probably always want to use `sso:account:access`, which allows you to access all accounts that you've been granted access to.
 
 Each `profile` entry references an `sso-session`, and there can be many `profile` entries that reference the same `sso-session`.
-For example, I have an administration profile for each subaccount of each organization that I administer.
-Each `profile` will reference the organization's `sso_session`, and the specify the account ID of the subaccount. I provision all subaccounts with  my `AdministratorAccess` permission set, so the `sso_role_name` is `AdministratorAccess`.
+For example, I have an administration profile for each member account of each organization that I administer.
+Each `profile` will reference the organization's `sso_session`, and it will specify the account ID of the member account. I provision all member accounts with my `AdministratorAccess` permission set, so the `sso_role_name` is `AdministratorAccess`.
 The `sso_role_name` will always be the name of the permission set you've created in IAM Identity Center and provisioned into the account. (Don't forget that you need to provision permission sets into accounts to create roles.)
 
 You can also create profiles that take on specific roles in other accounts.
